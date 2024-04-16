@@ -32,3 +32,11 @@ def update_movie(movie_id: int, new_movie: MovieRequest) -> Union[Movie, None]:
             movie['cast'] = new_movie.movie_cast
             return movie
     raise HTTPException(status_code=404, detail="Movie not found")
+
+@app.delete("/movies/{movie_id}", response_model=Movie)
+def delete_movie(movie_id: int) -> Union[Movie, None]:
+    for idx, movie in enumerate(movies._movies):
+        if movie['id'] == movie_id:
+            deleted_movie = movies._movies.pop(idx)
+            return deleted_movie
+    raise HTTPException(status_code=404, detail="Movie not found")
