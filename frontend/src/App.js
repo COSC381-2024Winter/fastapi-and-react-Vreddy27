@@ -1,4 +1,3 @@
-import logo from './logo.svg';
 import './App.css';
 import { useEffect, useState } from 'react';
 import { TextField, List, ListItem, ListItemIcon, ListItemText } from '@mui/material';
@@ -12,43 +11,43 @@ function App() {
     if (movieId === "") {
       setMovie(null);
     } else {
-      console.log(movieId);
+      
+      fetch(`http://localhost:8000/movies/${movieId}`)
+        .then(response => {
+          if (!response.ok) {
+            throw new Error('Movie not found');
+          }
+          return response.json();
+        })
+        .then(result => {
+          setMovie(result);
+        })
+        .catch(error => {
+          console.error('Error fetching movie:', error);
+          setMovie(null);
+        });
+
     }
   }, [movieId]);
+
+  useEffect(() => {
+    console.log(movie);
+    }
+  , [movie]);
+
 
   return (
     <div className="App">
       <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
         <TextField
           id="outlined-basic"
           label="MovieId"
           variant="outlined"
-          color="secondary"
+          color="success"
           value={movieId}
           onChange={e => setMovieId(e.target.value)}
         />
-        <List>
-          {movie && (
-            <ListItem>
-              <ListItemIcon>
-                <LocalMoviesIcon />
-              </ListItemIcon>
-              <ListItemText primary={movie.name} />
-            </ListItem>
-          )}
-        </List>
+        
       </header>
     </div>
   );
