@@ -11,7 +11,8 @@ function App() {
     if (movieId === "") {
       setMovie(null);
     } else {
-      
+      console.log(movieId);
+
       fetch(`http://localhost:8000/movies/${movieId}`)
         .then(response => {
           if (!response.ok) {
